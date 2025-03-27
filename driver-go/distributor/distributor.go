@@ -20,7 +20,6 @@ func elevatorDistributorInit(id string) config.ElevatorDistributor{
 
 }
 
-// Distribuing orders among the elevators
 func Distributor(
 	id 						int,
 	ch_newLocalOrder 		chan elevio.ButtonEvent,
@@ -63,7 +62,7 @@ func Distributor(
 	// Distributes orders among the elevators on the network
 	for{
 		select{
-		case newOrder := <- ch_newLocalOrder:
+		case newOrder := <- ch_newLocalOrder: //Checks for new orders and assignes these to an elevator
 			assigner.AssignOrder(elevators, newOrder)
 			if elevators[config.LocalElevator].Requests[newOrder.Floor][newOrder.Button] == config.Order{
 				broadcastElevatorState(elevators, ch_msgToNetwork)
@@ -74,7 +73,7 @@ func Distributor(
 			broadcastElevatorState(elevators, ch_msgToNetwork)
 			setElevatorLights(elevators,id)
 
-		case newState := <- ch_newLocalState:
+		case newState := <- ch_newLocalState: //Checks for state updates and sets the elevators state accordingly
 			if (newState.Floor != elevators[config.LocalElevator].Floor) || 
 				(newState.Behave == elevator.Idle) || 
 				(newState.Behave == elevator.DoorOpen) {
@@ -101,7 +100,7 @@ func Distributor(
 			broadcastElevatorState(elevators, ch_msgToNetwork)
 			assigner.RemoveCompletedOrders(elevators)
 			
-		case newElevators := <- ch_msgFromNetwork:
+		case newElevators := <- ch_msgFromNetwork: //Checks the network for new elevators
 			if len(newElevators) > 0 {
 				updateElevators(elevators,newElevators)
 			}
@@ -129,7 +128,7 @@ func Distributor(
 				broadcastElevatorState(elevators, ch_msgToNetwork)
 			}
 
-		case peer := <- ch_peerUpdate:
+		case peer := <- ch_peerUpdate: //Checks for peer updates amd sets behaviour to unavailable no update is received
 			if len(peer.Lost) != 0{
 				for _, stringLostId := range peer.Lost{
 					for _,elev := range elevators {

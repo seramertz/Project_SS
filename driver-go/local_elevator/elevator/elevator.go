@@ -17,7 +17,7 @@ type Elevator struct {
 	Floor      int
 	Direction  elevio.MotorDirection
 	Requests   [][]bool
-	Behave     Behaviour
+	Behaviour  Behaviour
 	TimerCount int
 	Obstructed bool
 }
@@ -39,7 +39,7 @@ func InitElevator() Elevator {
 		Floor:      elevio.GetFloor(),
 		Direction:  elevio.MD_Stop,
 		Requests:   requests,
-		Behave:     Idle,
+		Behaviour:  Idle,
 		TimerCount: 0,
 		Obstructed: false}
 }

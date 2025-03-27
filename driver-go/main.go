@@ -1,23 +1,21 @@
 package main
 
 import (
-	"flag"
-	"fmt"
-	"Driver-go/local_elevator/elevator"
-	"Driver-go/elevio"
-	"Driver-go/local_elevator/fsm"
 	"Driver-go/config"
 	"Driver-go/distributor"
-	"Driver-go/watchdog"
+	"Driver-go/elevio"
+	"Driver-go/local_elevator/elevator"
+	"Driver-go/local_elevator/fsm"
 	"Driver-go/network/bcast"
 	"Driver-go/network/peers"
+	"Driver-go/watchdog"
+	"flag"
+	"fmt"
 	"strconv"
 )
 
-
 var Port int
 var id int
-
 
 func main() {
 
@@ -27,12 +25,11 @@ func main() {
 
 	Port = *port
 	id = *elevId
-	
+
 	elevio.Init("localhost:"+strconv.Itoa(Port), config.NumFloors)
 
 	fmt.Println("Elevator initialized with id", id, "on port", Port)
 	fmt.Println("System has", config.NumFloors, "floors and", config.NumElevators, "elevators.")
-
 
 	// Distributor channels
 	ch_newLocalOrder := make(chan elevio.ButtonEvent, 100)
@@ -45,7 +42,7 @@ func main() {
 	ch_clearLocalHallOrders := make(chan bool)
 	ch_orderToLocal := make(chan elevio.ButtonEvent, 100)
 	ch_newLocalState := make(chan elevator.Elevator, 100)
-	
+
 	// Watchdog channels
 	ch_watchdogStuckReset := make(chan bool)
 	ch_watchdogStuckSignal := make(chan bool)
@@ -55,18 +52,16 @@ func main() {
 	ch_obstruction := make(chan bool, 1)
 	ch_timerDoor := make(chan bool)
 
-
-
 	go elevio.PollFloorSensor(ch_arrivedAtFloors)
 	go elevio.PollObstructionSwitch(ch_obstruction)
 	go elevio.PollButtons(ch_newLocalOrder)
 
 	go fsm.Fsm(
-		ch_orderToLocal, 
-		ch_newLocalState, 
-		ch_clearLocalHallOrders, 
-		ch_arrivedAtFloors, 
-		ch_obstruction, 
+		ch_orderToLocal,
+		ch_newLocalState,
+		ch_clearLocalHallOrders,
+		ch_arrivedAtFloors,
+		ch_obstruction,
 		ch_timerDoor)
 
 	go bcast.Transmitter(config.NumBcastPort, ch_msgToNetwork)
@@ -79,13 +74,13 @@ func main() {
 	go distributor.Distributor(
 		id,
 		ch_newLocalOrder,
-		ch_newLocalState, 
-		ch_msgFromNetwork, 
-		ch_msgToNetwork, 
-		ch_orderToLocal, 
-		ch_peerUpdate, 
-		ch_watchdogStuckReset, 
-		ch_watchdogStuckSignal, 
+		ch_newLocalState,
+		ch_msgFromNetwork,
+		ch_msgToNetwork,
+		ch_orderToLocal,
+		ch_peerUpdate,
+		ch_watchdogStuckReset,
+		ch_watchdogStuckSignal,
 		ch_clearLocalHallOrders)
 
 	select {}

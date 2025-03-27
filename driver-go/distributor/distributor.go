@@ -47,7 +47,9 @@ func Distributor(
 				for floor := range elev.Requests {
 					if (elev.Requests[floor][config.Cab] == config.Confirmed) ||
 						(elev.Requests[floor][config.Cab] == config.Order) {
-						ch_newLocalOrder <- elevio.ButtonEvent{Floor: floor, Button: elevio.ButtonType(int(config.Cab))}
+						ch_newLocalOrder <- elevio.ButtonEvent{
+							Floor:  floor,
+							Button: elevio.ButtonType(int(config.Cab))}
 					}
 				}
 			}

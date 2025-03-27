@@ -76,7 +76,7 @@ func Fsm(
 
 			}
 
-		case <-doorTimer.C: // Handles door
+		case <-doorTimer.C: // Handles door functionality
 			switch {
 			case elev.Behaviour == elevator.DoorOpen:
 				if elev.Obstructed {

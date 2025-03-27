@@ -22,7 +22,6 @@ type Elevator struct {
 	Obstructed bool
 }
 
-// Initializes an elevator to be at floor zero
 func InitElevator() Elevator {
 	requests := make([][]bool, 0)
 	for floor := 0; floor < config.NumFloors; floor++ {
@@ -44,7 +43,6 @@ func InitElevator() Elevator {
 		Obstructed: false}
 }
 
-// Set elevtor lights and floor indicators
 func SetLocalLights(e Elevator) {
 	elevio.SetFloorIndicator(e.Floor)
 	for floor := range e.Requests {

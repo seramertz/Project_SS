@@ -45,7 +45,7 @@ func RequestClearAtCurrentFloor(e *elevator.Elevator) {
 	}
 }
 
-// Stop based on current floor and direction
+// Tells the elevator if it should stop based on current floor and direction
 func RequestShouldStop(e *elevator.Elevator) bool {
 	switch {
 	case e.Direction == elevio.MD_Down:

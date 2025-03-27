@@ -6,6 +6,7 @@ import (
 )
 
 // Cost function that calculates the cost of assigning an order to an elevator
+// Based on the distributed hall assigner from github repo
 func Cost(elev *config.ElevatorDistributor, req elevio.ButtonEvent) int {
 	highestDuration := config.MaxCost
 	if elev.Behaviour != config.Unavailable {
@@ -44,7 +45,7 @@ func Cost(elev *config.ElevatorDistributor, req elevio.ButtonEvent) int {
 	return highestDuration
 }
 
-// Request functions for elevator distributor object
+// ---Request functions for elevator distributor object---
 
 func distributorRequestsAbove(elev config.ElevatorDistributor) bool {
 	for f := elev.Floor + 1; f < config.NumFloors; f++ {

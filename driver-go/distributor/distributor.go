@@ -20,6 +20,8 @@ func elevatorDistributorInit(id string) config.ElevatorDistributor {
 
 }
 
+// Distributor listens for events and manages order distribution among elevators.
+// It processes new orders, updates elevator states, and hetwork meandles nssages.
 func Distributor(
 	id int,
 	ch_newLocalOrder chan elevio.ButtonEvent,
@@ -32,6 +34,7 @@ func Distributor(
 	ch_watchdogStuckSignal chan bool,
 	ch_clearLocalHallOrders chan bool) {
 
+	//initialize elevator distributor and create list of elevators
 	elevators := make([]*config.ElevatorDistributor, 0)
 	thisElevator := new(config.ElevatorDistributor)
 	*thisElevator = elevatorDistributorInit(strconv.Itoa(id))
@@ -78,6 +81,7 @@ func Distributor(
 			if (newState.Floor != elevators[config.LocalElevator].Floor) ||
 				(newState.Behaviour == elevator.Idle) ||
 				(newState.Behaviour == elevator.DoorOpen) {
+
 				elevators[config.LocalElevator].Behaviour = config.Behaviour(int(newState.Behaviour))
 				elevators[config.LocalElevator].Floor = newState.Floor
 				elevators[config.LocalElevator].Direction = config.Direction(int(newState.Direction))

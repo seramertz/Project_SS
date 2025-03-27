@@ -1,8 +1,8 @@
 package assigner
 
 import (
-	"Driver-go/config"
 	"Driver-go/assigner/cost"
+	"Driver-go/config"
 	"Driver-go/elevio"
 	"strconv"
 )
@@ -27,7 +27,7 @@ func ReassignOrders(elevators []*config.ElevatorDistributor, ch_newLocalOrder ch
 		}
 	}
 }
-// Finds and returns the lowest ID of the elevators
+
 func findLowestID(elevators []*config.ElevatorDistributor) int {
 	lowID := config.MaxCost
 	for _, elev := range elevators {
@@ -41,8 +41,8 @@ func findLowestID(elevators []*config.ElevatorDistributor) int {
 	return lowID
 }
 
-// Assignes new order to the right elevator depending on a cost function.
-func AssignOrder(elevators []*config.ElevatorDistributor, order elevio.ButtonEvent){
+// Assignes new order to the right elevator depending on the result of the cost calcultaion
+func AssignOrder(elevators []*config.ElevatorDistributor, order elevio.ButtonEvent) {
 	if len(elevators) < 2 || order.Button == elevio.BT_Cab {
 		elevators[config.LocalElevator].Requests[order.Floor][order.Button] = config.Order
 		return
@@ -60,7 +60,6 @@ func AssignOrder(elevators []*config.ElevatorDistributor, order elevio.ButtonEve
 	(*minElev).Requests[order.Floor][order.Button] = config.Order
 }
 
-// Remove completed orders from the elevator
 func RemoveCompletedOrders(elevators []*config.ElevatorDistributor) {
 	for _, elev := range elevators {
 		for floor := range elev.Requests {

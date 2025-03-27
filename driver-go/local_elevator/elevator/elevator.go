@@ -43,6 +43,7 @@ func InitElevator() Elevator {
 		Obstructed: false}
 }
 
+// Sets floor indicators and cab lights for local elevator
 func SetLocalLights(e Elevator) {
 	elevio.SetFloorIndicator(e.Floor)
 	for floor := range e.Requests {

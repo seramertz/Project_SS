@@ -23,15 +23,15 @@ func elevatorDistributorInit(id string) config.ElevatorDistributor {
 // Distributor listens for events and manages order distribution among elevators.
 // It processes new orders, updates elevator states, and hetwork meandles nssages.
 func Distributor(
-	id int,
-	ch_newLocalOrder chan elevio.ButtonEvent,
-	ch_newLocalState chan elevator.Elevator,
-	ch_msgFromNetwork chan []config.ElevatorDistributor,
-	ch_msgToNetwork chan []config.ElevatorDistributor,
-	ch_orderToLocal chan elevio.ButtonEvent,
-	ch_peerUpdate chan peers.PeerUpdate,
-	ch_watchdogStuckReset chan bool,
-	ch_watchdogStuckSignal chan bool,
+	id 						int,
+	ch_newLocalOrder 		chan elevio.ButtonEvent,
+	ch_newLocalState 		chan elevator.Elevator,
+	ch_msgFromNetwork 		chan []config.ElevatorDistributor,
+	ch_msgToNetwork 		chan []config.ElevatorDistributor,
+	ch_orderToLocal 		chan elevio.ButtonEvent,
+	ch_peerUpdate 			chan peers.PeerUpdate,
+	ch_watchdogStuckReset 	chan bool,
+	ch_watchdogStuckSignal 	chan bool,
 	ch_clearLocalHallOrders chan bool) {
 
 	//initialize elevator distributor and create list of elevators
@@ -87,6 +87,8 @@ func Distributor(
 				elevators[config.LocalElevator].Direction = config.Direction(int(newState.Direction))
 				ch_watchdogStuckReset <- false
 			}
+	
+			
 			for floor := range elevators[config.LocalElevator].Requests {
 				for button := range elevators[config.LocalElevator].Requests[floor] {
 					if (!newState.Requests[floor][button]) &&

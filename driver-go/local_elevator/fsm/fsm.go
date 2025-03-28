@@ -10,9 +10,9 @@ import (
 
 // Statemachine for running local elevator
 func Fsm(
-ch_orderChan 				chan elevio.ButtonEvent,
-ch_elevatorState 			chan<- elevator.Elevator,
-	ch_clearLocalHallOrders chan bool,
+	ch_orderChan 			chan elevio.ButtonEvent,
+	ch_elevatorState 		chan<- elevator.Elevator,
+	ch_clearLocalHallOrders 	chan bool,
 	ch_arrivedAtFloors 		chan int,
 	ch_obstruction 			chan bool,
 	ch_timerDoor 			chan bool) {

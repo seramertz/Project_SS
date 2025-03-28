@@ -40,17 +40,17 @@ func main() {
 
 	// Communication between distributor and 'local elevator'
 	ch_clearLocalHallOrders := make(chan bool)
-	ch_orderToLocal 		:= make(chan elevio.ButtonEvent, 100)
-	ch_newLocalState 		:= make(chan elevator.Elevator, 100)
+	ch_orderToLocal 	:= make(chan elevio.ButtonEvent, 100)
+	ch_newLocalState 	:= make(chan elevator.Elevator, 100)
 
 	// Watchdog channels
 	ch_watchdogStuckReset	:= make(chan bool)
 	ch_watchdogStuckSignal 	:= make(chan bool)
 
 	// 'Local elevator' channels
-	ch_arrivedAtFloors 		:= make(chan int)
-	ch_obstruction 			:= make(chan bool, 1)
-	ch_timerDoor 			:= make(chan bool)
+	ch_arrivedAtFloors 	:= make(chan int)
+	ch_obstruction 		:= make(chan bool, 1)
+	ch_timerDoor 		:= make(chan bool)
 
 	go elevio.PollFloorSensor(ch_arrivedAtFloors)
 	go elevio.PollObstructionSwitch(ch_obstruction)

@@ -40,8 +40,8 @@ func main() {
 
 	// Communication between distributor and 'local elevator'
 	ch_clearLocalHallOrders := make(chan bool)
-	ch_orderToLocal 	:= make(chan elevio.ButtonEvent, 100)
-	ch_newLocalState 	:= make(chan elevator.Elevator, 100)
+	ch_orderToLocal 		:= make(chan elevio.ButtonEvent, 100)
+	ch_newLocalState 		:= make(chan elevator.Elevator, 100)
 
 	// Watchdog channels
 	ch_watchdogStuckReset	:= make(chan bool)
